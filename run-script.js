@@ -1,69 +1,55 @@
-let studentId = "";
-let scene = 0;
-let expertQuizQuestions = {};
-let finalQuizQuestions = {};
-let startTime = 0;
-let endTime = 0;
-let qIndex = 0;
-let inIntro = true;
-let inQuiz = false;
-let quizSelf = [];
-let quizOthers = [];
+let studentId = ""
+let scene = 0
+let expertQuizQuestions = {}
+let finalQuizQuestions = {}
+let startTime = 0
+let endTime = 0
+let qIndex = 0
+let inIntro = true
+let inQuiz = false
+let quizSelf = []
+let quizOthers = []
 
 $(document).ready(function () {
-  // $("#button-container").hide();
-  $("#intro").hide();
-
-  $("#teach").hide();
-  $("#feedbackContainer").hide();
-  $("#studentId").hide();
+  // $("#button-container").hide()
+  $("#intro").hide()
+  $("#teach").hide()
+  $("#feedbackContainer").hide()
+  $("#studentId").hide()
 
   
-});
+})
 
 function introductionText() {
-
-  $("#intro").show();
-  qIndex = 0;
-  currentQuestions = introductionScripts;
-  makeQuestion(currentQuestions);
+  $("#intro").show()
+  qIndex = 0
+  currentQuestions = introductionScripts
+  makeQuestion(currentQuestions)
 }
-
-function chooseStudent() {
-  scene = 2;
-  $("#section").html("Select Role")
-
-  $("#studentId").show();
-  $("#intro").hide();
-
-
-}
-
-
 
 
 function checkUnderstanding() {
   if (studentId === "stuA") {
-    currentQuestions = questions.filter(i => i.name.substr(0, 5) === "grind");
+    currentQuestions = questions.filter(i => i.name.substr(0, 5) === "grind")
   } else if (studentId === "stuB") {
-    currentQuestions = questions.filter(i => i.name.substr(0, 6) === "honing");
+    currentQuestions = questions.filter(i => i.name.substr(0, 6) === "honing")
   } 
-  $("#section").html("Check Your Understanding");
-  console.log("quiz01");
+  $("#section").html("Quiz!")
 
-  // console.log(expertQuizQuestions);
-  qIndex = 0;
-  console.log(currentQuestions);
-  makeQuestion(currentQuestions);
+
+  // console.log(expertQuizQuestions)
+  qIndex = 0
+  console.log(currentQuestions)
+  makeQuestion(currentQuestions)
 }
 
 
 function makeQuestion(questions) {
-  $("#currQuestion").text(questions[qIndex].text);
-  // makeButtons(questions);
+  $("#currQuestion").text(questions[qIndex].text)
+  // makeButtons(questions)
 
   let buttons = questions[qIndex].buttons
-  $("#buttonContainer").empty();
+  $("#buttonContainer").empty()
   buttons.forEach(b => {
     $("<button/>", {
       id: b.id,
@@ -76,68 +62,68 @@ function makeQuestion(questions) {
     if (b.image != "") {
       $("<img>", { src: b.image }).appendTo("#" + b.id)
     }
-  });
-  $("#questionContainer").show("slow");
+  })
+  $("#questionContainer").show("slow")
 
 }
 
 function giveFeedback(questions, cor, words, whereTo) {
-  console.log("feedback", JSON.stringify(questions));
+  console.log("feedback", JSON.stringify(questions))
   $("#questionContainer").hide()
-  $("#feedbackContainer").show();
+  $("#feedbackContainer").show()
 
   if (!inQuiz && !inIntro) {
     if (cor === 'true') {
       $("<h3/>", { text: "Correct!" })
         .css('background-color', '#99ff99')
-        .appendTo("#feedbackContainer");
+        .appendTo("#feedbackContainer")
     } else {
       $("<h3/>", { text: "That's not correct..." })
         .css('background-color', '#ff6699')
-        .appendTo("#feedbackContainer");
+        .appendTo("#feedbackContainer")
 
-      currentQuestions.push(currentQuestions[qIndex]);
+      currentQuestions.push(currentQuestions[qIndex])
     }
-    $("<p/>", { text: words }).appendTo("#feedbackContainer");
+    $("<p/>", { text: words }).appendTo("#feedbackContainer")
 
     $("<button/>", { text: "Continue" })
       .attr("onClick", "clearFeedback(\"" + questions + "\")")
       .addClass("btn btn-outline-secondary")
-      .appendTo("#feedbackContainer");
+      .appendTo("#feedbackContainer")
 
   } else if (inIntro) {
-    clearFeedback();
+    clearFeedback()
   } else {
     
 
     if (studentId === "stuA" && currentQuestions[qIndex].name.startsWith("grind") ||
       studentId === "stuB" && currentQuestions[qIndex].name.startsWith("hon")
     ) {
-      quizSelf.push(cor);
+      quizSelf.push(cor)
     } else {
-      quizOthers.push(cor);
+      quizOthers.push(cor)
     }
-    clearFeedback();
+    clearFeedback()
   }
 }
 
 
 function clearFeedback(questions) {
-  console.log("feedback", questions);
-  $("#feedbackContainer").empty().hide();
-  qIndex += 1;
+  console.log("feedback", questions)
+  $("#feedbackContainer").empty().hide()
+  qIndex += 1
   if (qIndex < currentQuestions.length) {
-    makeQuestion(currentQuestions);
-  } else if (inIntro) { inIntro = false; chooseStudent(); }
-  else if (!inQuiz) talkInGroup();
-  else if (inQuiz) quizFeedback();
+    makeQuestion(currentQuestions)
+  } else if (inIntro) { inIntro = false chooseStudent() }
+  else if (!inQuiz) talkInGroup()
+  else if (inQuiz) quizFeedback()
 }
 
 function talkInGroup() {
-  $("#feedbackContainer").hide();
-  $("#teach").show();
-  $("#section").html("Talk with Each Other");
-  console.log("talk in group");
+  $("#feedbackContainer").hide()
+  $("#teach").show()
+  $("#section").html("Talk with Each Other")
+  console.log("talk in group")
 
   $("#teach").html("<h3>Talk with your partner about what you learned, and make sure they understand the following topics:</h3>")
 
@@ -157,44 +143,44 @@ function talkInGroup() {
         '<label class="form-check-label" for="exampleCheck1">' + topics[i] + '</label>' +
         '</div>')
   }
-  $("#teach").append("<button id='goToQuiz' class='btn btn-outline-secondary'>Take a Quiz</button>");
-  $("#goToQuiz").hide();
+  $("#teach").append("<button id='goToQuiz' class='btn btn-outline-secondary'>Take a Quiz</button>")
+  $("#goToQuiz").hide()
   $(".form-check").click(function () {
-    let checked = $('input[type=checkbox]:checked').siblings().text();
-    console.log(checked);
+    let checked = $('input[type=checkbox]:checked').siblings().text()
+    console.log(checked)
 
 
     if (checked === topics.join("")) {
       $("#goToQuiz").show().click(function () {
-        quiz();
-      });
+        quiz()
+      })
     } else {
-      $("#goToQuiz").hide();
+      $("#goToQuiz").hide()
     }
-  });
+  })
 }
 
 function quiz() {
-  $("#section").html("Quiz");
-  inQuiz = true;
-  qIndex = 0;
-  console.log("doing quiz");
+  $("#section").html("Quiz")
+  inQuiz = true
+  qIndex = 0
+  console.log("doing quiz")
 
-  $("#teach").hide();
-  $("#feedbackContainer").hide();
-  console.log(questions);
-  currentQuestions = questions;
-  makeQuestion(currentQuestions);
+  $("#teach").hide()
+  $("#feedbackContainer").hide()
+  console.log(questions)
+  currentQuestions = questions
+  makeQuestion(currentQuestions)
 }
 
 function quizFeedback() {
-  console.log("quizFeedback");
-  console.log("quizSelf:", quizSelf);
-  console.log("quizOthers:", quizOthers);
-  $("#section").html("Feedback!");
-  let selfScore = 0, othersScore = 0;
-  let selfPoints = 10, othersPoints = 20;
-  let bonus = 0;
+  console.log("quizFeedback")
+  console.log("quizSelf:", quizSelf)
+  console.log("quizOthers:", quizOthers)
+  $("#section").html("Feedback!")
+  let selfScore = 0, othersScore = 0
+  let selfPoints = 10, othersPoints = 20
+  let bonus = 0
 
   let selfFeedback = "", othersFeedback = ""
 
@@ -205,7 +191,7 @@ function quizFeedback() {
     if (quizOthers[i] === "true") othersScore += othersPoints
   }
 
-  console.log("score", selfScore + othersScore + bonus);
+  console.log("score", selfScore + othersScore + bonus)
   if (selfScore < 40) {
     selfFeedback = "You made some mistakes on the video that was assigned to you. You may want to revisit the video and try again."
   } else {
@@ -219,15 +205,15 @@ function quizFeedback() {
   } else {
     othersFeedback = "you clearly know how both grinding and honing work and when to use each."
   }
-  $("#feedbackContainer").empty().show();
-  $("#feedbackContainer").append("<h6>" + selfFeedback + "</h6>");
-  $("#feedbackContainer").append("<h6> Also, " + othersFeedback + "</h6>");
+  $("#feedbackContainer").empty().show()
+  $("#feedbackContainer").append("<h6>" + selfFeedback + "</h6>")
+  $("#feedbackContainer").append("<h6> Also, " + othersFeedback + "</h6>")
 
   if(othersScore < 160 ){
-    $("#feedbackContainer").append("<button id='quizAgain' class='btn btn-outline-secondary'>Teach Each Other Again</button>");
-    $("#quizAgain").click(talkInGroup);
-    quizSelf = [];
-    quizOthers = [];
+    $("#feedbackContainer").append("<button id='quizAgain' class='btn btn-outline-secondary'>Teach Each Other Again</button>")
+    $("#quizAgain").click(talkInGroup)
+    quizSelf = []
+    quizOthers = []
   }
  
 }
