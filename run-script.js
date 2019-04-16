@@ -114,7 +114,7 @@ function clearFeedback(questions) {
   qIndex += 1
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
-  } else if (inIntro) { inIntro = false chooseStudent() }
+  } else if (inIntro) { inIntro = false }
   else if (!inQuiz) talkInGroup()
   else if (inQuiz) quizFeedback()
 }
