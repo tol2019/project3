@@ -22,7 +22,6 @@ $(document).ready(function () {
   $("#teach").hide()
   $("#feedbackContainer").hide()
   $("#studentId").hide()
-
   introductionText()
 })
 
@@ -49,6 +48,12 @@ function checkUnderstanding() {
   makeQuestion(currentQuestions)
 }
 
+
+function selectQuestions() {
+  $.get('project3_data/Answers_data_prj3_updated.csv').done(data =>{
+    console.log(data);
+  })
+}
 
 function makeQuestion(questions) {
   $("#currQuestion").text(questions[qIndex].text)
@@ -114,6 +119,7 @@ function clearFeedback(questions) {
     makeQuestion(currentQuestions)
   } else if (inIntro) { 
     inIntro = false 
+    selectQuestions()
     quiz()
   }
   else if (!inQuiz) talkInGroup()
