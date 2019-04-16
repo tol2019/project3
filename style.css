@@ -1,0 +1,61 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+#title {
+  margin-top: 0;
+  background-color: #ddd;
+}
+
+#container{
+  border: 1px solid #ddd;
+  width: 800px;
+  height: 600px;
+}
+.studentId div {
+  text-align: center;
+  margin: auto;
+}
+
+#stuA, #stuB {
+  width: 120px;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-between; */
+  margin: auto;
+  width: 800px;
+  padding-top: 50px;
+}
+
+#questionContainer, #buttonContainer, #feedbackContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+#buttonContainer {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.options {
+  margin:10px;
+}
+
+footer {
+  width: 800px;
+  margin: auto;
+  color: #666;
+}
+
+#quizAgain, #videoAgain{
+  margin: 10px;
+}
