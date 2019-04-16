@@ -16,8 +16,6 @@ $(document).ready(function () {
   $("#teach").hide()
   $("#feedbackContainer").hide()
   $("#studentId").hide()
-
-  
 })
 
 function introductionText() {
