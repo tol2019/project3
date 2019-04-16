@@ -1,3 +1,9 @@
+/**
+ * Created by: Greg Bunyea
+ * Modified by: Hao Li
+ */
+
+
 let studentId = ""
 let scene = 0
 let expertQuizQuestions = {}
@@ -16,6 +22,8 @@ $(document).ready(function () {
   $("#teach").hide()
   $("#feedbackContainer").hide()
   $("#studentId").hide()
+
+  introductionText()
 })
 
 function introductionText() {
@@ -93,14 +101,6 @@ function giveFeedback(questions, cor, words, whereTo) {
     clearFeedback()
   } else {
     
-
-    if (studentId === "stuA" && currentQuestions[qIndex].name.startsWith("grind") ||
-      studentId === "stuB" && currentQuestions[qIndex].name.startsWith("hon")
-    ) {
-      quizSelf.push(cor)
-    } else {
-      quizOthers.push(cor)
-    }
     clearFeedback()
   }
 }
@@ -112,7 +112,10 @@ function clearFeedback(questions) {
   qIndex += 1
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
-  } else if (inIntro) { inIntro = false }
+  } else if (inIntro) { 
+    inIntro = false 
+    quiz()
+  }
   else if (!inQuiz) talkInGroup()
   else if (inQuiz) quizFeedback()
 }
@@ -166,6 +169,7 @@ function quiz() {
 
   $("#teach").hide()
   $("#feedbackContainer").hide()
+  $("#intro").hide()
   console.log(questions)
   currentQuestions = questions
   makeQuestion(currentQuestions)

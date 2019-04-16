@@ -45,35 +45,7 @@ let template = {
 let introductionScripts = [
     {
         "name": "intro",
-        "text": "Today we will learn how different knife sharpeners work. We will learn two techniques, Honing and Grinding. ",
-        "buttons": [
-            {
-                "id": "b1",
-                "image": "",
-                "description": "Continue",
-                "answer": true,
-                "feedback": "",
-                "whereTo": ""
-            }
-        ]
-    },
-    {
-        "name": "intro",
-        "text": "You will be learning in teams of two. One will learn Honing, the other Grinding. Then you will teach each other.",
-        "buttons": [
-            {
-                "id": "b1",
-                "image": "",
-                "description": "Continue",
-                "answer": true,
-                "feedback": "",
-                "whereTo": ""
-            }
-        ]
-    },
-    {
-        "name": "intro",
-        "text": "Before you teach each other, you will have a chance to check your own understanding. After that you will take a quiz on both techniques.",
+        "text": "Today you will be taking a quiz.",
         "buttons": [
             {
                 "id": "b1",
