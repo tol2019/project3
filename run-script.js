@@ -2,19 +2,16 @@
  * Created by: Greg Bunyea
  * Modified by: Hao Li
  */
-
-
 let studentId = ""
 let scene = 0
 let expertQuizQuestions = {}
 let finalQuizQuestions = {}
-let startTime = 0
-let endTime = 0
 let qIndex = 0
 let inIntro = true
 let inQuiz = false
-let quizSelf = []
-let quizOthers = []
+
+let questionData
+let answerData
 
 $(document).ready(function () {
   // $("#button-container").hide()
@@ -34,25 +31,27 @@ function introductionText() {
 
 
 function checkUnderstanding() {
-  if (studentId === "stuA") {
-    currentQuestions = questions.filter(i => i.name.substr(0, 5) === "grind")
-  } else if (studentId === "stuB") {
-    currentQuestions = questions.filter(i => i.name.substr(0, 6) === "honing")
-  } 
-  $("#section").html("Quiz!")
 
+  currentQuestions = questions.filter(i => i.name.substr(0, 5) === "grind")
 
+  // $("#section").html("Quiz!")
   // console.log(expertQuizQuestions)
   qIndex = 0
   console.log(currentQuestions)
   makeQuestion(currentQuestions)
 }
 
+function readFiles() {
+  $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
+    answerData = data.split("\r")
+    console.log(answerData[0].split(","))
 
-function selectQuestions() {
-  $.get('project3_data/Answers_data_prj3_updated.csv').done(data =>{
-    console.log(data);
   })
+
+
+}
+function generateQuestions() {
+  
 }
 
 function makeQuestion(questions) {
@@ -105,7 +104,7 @@ function giveFeedback(questions, cor, words, whereTo) {
   } else if (inIntro) {
     clearFeedback()
   } else {
-    
+
     clearFeedback()
   }
 }
@@ -117,12 +116,15 @@ function clearFeedback(questions) {
   qIndex += 1
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
-  } else if (inIntro) { 
-    inIntro = false 
-    selectQuestions()
-    quiz()
+  } else if (inIntro) {
+    inIntro = false
+    readFiles()
+    generateQuestions()
+    // quiz()
+
+    checkUnderstanding()
   }
-  else if (!inQuiz) talkInGroup()
+  // else if (!inQuiz) talkInGroup()
   else if (inQuiz) quizFeedback()
 }
 
@@ -217,11 +219,11 @@ function quizFeedback() {
   $("#feedbackContainer").append("<h6>" + selfFeedback + "</h6>")
   $("#feedbackContainer").append("<h6> Also, " + othersFeedback + "</h6>")
 
-  if(othersScore < 160 ){
+  if (othersScore < 160) {
     $("#feedbackContainer").append("<button id='quizAgain' class='btn btn-outline-secondary'>Teach Each Other Again</button>")
     $("#quizAgain").click(talkInGroup)
     quizSelf = []
     quizOthers = []
   }
- 
+
 }
