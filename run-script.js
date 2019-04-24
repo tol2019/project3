@@ -2,6 +2,12 @@
  * Created by: Greg Bunyea
  * Modified by: Hao Li
  */
+
+// const csv = require('csvtojson')
+const parseConfig = {
+  header: true
+}
+
 let studentId = ""
 let scene = 0
 let expertQuizQuestions = {}
@@ -10,8 +16,8 @@ let qIndex = 0
 let inIntro = true
 let inQuiz = false
 
-let questionData
-let answerData
+let questionData = []
+let answerData = []
 
 $(document).ready(function () {
   // $("#button-container").hide()
@@ -42,17 +48,28 @@ function checkUnderstanding() {
 }
 
 function readFiles() {
-  $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
-    answerData = data.split("\r")
-    console.log(answerData[0].split(","))
+  let answers = []
 
+
+  $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
+
+    // trying PapaParse
+    answerData = Papa.parse(data, parseConfig)
+    console.log("answer data:", answerData)
+
+  })
+
+  $.get('project3_data/Questions_data_prj3.csv').done(data => {
+    questionData = Papa.parse(data, parseConfig)
+    console.log("question data", questionData)
   })
 
 
 }
+
 function generateQuestions() {
-  
 }
+
 
 function makeQuestion(questions) {
   $("#currQuestion").text(questions[qIndex].text)
