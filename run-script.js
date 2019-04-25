@@ -52,22 +52,33 @@ function readFiles() {
 
 
   $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
-
     // trying PapaParse
     answerData = Papa.parse(data, parseConfig)
     console.log("answer data:", answerData)
 
+    $.get('project3_data/Questions_data_prj3.csv').done(data => {
+      questionData = Papa.parse(data, parseConfig)
+      console.log("question data", questionData)
+
+      generateQuestions();
+
+    })
+
   })
-
-  $.get('project3_data/Questions_data_prj3.csv').done(data => {
-    questionData = Papa.parse(data, parseConfig)
-    console.log("question data", questionData)
-  })
-
-
 }
 
 function generateQuestions() {
+  let questions = questionData.data
+  questions.forEach(question => {
+    console.log(question['Question_id'])
+    console.log(question['Question_text'])
+
+    // get all answers for this question with other info
+    let answers = []
+
+    let correctAnswers = []
+    let wrongAnswers = []
+  })
 }
 
 
