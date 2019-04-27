@@ -13,6 +13,7 @@ body {
   border: 1px solid #ddd;
   width: 800px;
   height: 600px;
+  min-height: 600px;
 }
 .studentId div {
   text-align: center;

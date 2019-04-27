@@ -19,6 +19,8 @@ let inQuiz = false
 let questionData = []
 let answerData = []
 
+let quizQuestions = []
+
 $(document).ready(function () {
   // $("#button-container").hide()
   $("#intro").hide()
@@ -32,23 +34,20 @@ function introductionText() {
   $("#intro").show()
   qIndex = 0
   currentQuestions = introductionScripts
+  
   makeQuestion(currentQuestions)
 }
 
 
 function checkUnderstanding() {
-
-  currentQuestions = questions.filter(i => i.name.substr(0, 5) === "grind")
-
-  // $("#section").html("Quiz!")
-  // console.log(expertQuizQuestions)
+  console.log("check understanding")
+  currentQuestions = quizQuestions
   qIndex = 0
-  console.log(currentQuestions)
+  console.log("currentQuestions", currentQuestions)
   makeQuestion(currentQuestions)
 }
 
 function readFiles() {
-  let answers = []
 
 
   $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
@@ -60,7 +59,7 @@ function readFiles() {
       questionData = Papa.parse(data, parseConfig)
       console.log("question data", questionData)
 
-      generateQuestions();
+      generateQuestions()
 
     })
 
@@ -70,15 +69,101 @@ function readFiles() {
 function generateQuestions() {
   let questions = questionData.data
   questions.forEach(question => {
-    console.log(question['Question_id'])
-    console.log(question['Question_text'])
+
+    let questionId = question['Question_id']
 
     // get all answers for this question with other info
-    let answers = []
+    let answers = answerData.data.filter(answer => answer['Question_id']===questionId)
+    console.log("answers", answers)
 
-    let correctAnswers = []
-    let wrongAnswers = []
+    // get all correct answers
+    // need more complex evaluation in the future
+    let correctAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
+    console.log("correctAnswers", correctAnswers)
+
+    // get all incorrect answers
+    // need more complex evaluation in the future
+    let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <=0.9)
+    console.log("Wrong answers", wrongAnswers)
+
+
+    // generate random number for correct answers
+    let correctNum = Math.random() * 4
+    correctNum = Math.floor(correctNum) + 1
+    console.log(correctNum)
+
+    // push the first [correctNum] correct answers into answers
+    let options = []
+    options.push(...correctAnswers.slice(0, correctNum))
+    options.push(...wrongAnswers.slice(0, 4-correctNum))
+    console.log("options", options)
+
+    // generate JSON object and push to questions
+    let buttons = []
+    options.forEach(option => {
+      let optionObj = {
+        "id": "b1",
+        "image": "",
+        "description": option['Answer_text'],
+        "answer": option['Student_score_on_question'] > 0.9 ? true : false,
+        "feedback": "",
+        "whereTo": ""
+      }
+      buttons.push(optionObj)
+    })
+
+    let questionObj = {
+      "name": question['Question_id'],
+      "text": question['Question_text'],
+      "buttons": buttons
+    }
+
+    quizQuestions.push(questionObj)
+    console.log(quizQuestions)
+
+
+    let example = {
+      "name": "",
+      "text": "",
+      "buttons": [
+          {
+              "id": "b1",
+              "image": "",
+              "description": "",
+              "answer": true,
+              "feedback": "",
+              "whereTo": ""
+          },
+          {
+              "id": "b2",
+              "image": "",
+              "description": "",
+              "answer": false,
+              "feedback": "",
+              "whereTo": ""
+          },
+          {
+              "id": "b3",
+              "image": "",
+              "description": "",
+              "answer": false,
+              "feedback": "",
+              "whereTo": ""
+          },
+          {
+              "id": "b4",
+              "image": "",
+              "description": "",
+              "answer": false,
+              "feedback": "",
+              "whereTo": ""
+          }
+      ]
+  }
   })
+
+  console.log("questions generated")
+  checkUnderstanding()
 }
 
 
@@ -93,7 +178,7 @@ function makeQuestion(questions) {
       id: b.id,
       text: b.description,
     })
-      .addClass("btn btn-outline-secondary options")
+      .addClass("options")
       .attr("onClick", "giveFeedback(\"" + questions + "\",\"" + b.answer + "\",\"" + b.feedback + "\",\"" + b.whereTo + "\")")
       .appendTo("#buttonContainer")
 
@@ -101,7 +186,7 @@ function makeQuestion(questions) {
       $("<img>", { src: b.image }).appendTo("#" + b.id)
     }
   })
-  $("#questionContainer").show("slow")
+  $("#questionContainer").show()
 
 }
 
@@ -145,12 +230,11 @@ function clearFeedback(questions) {
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
   } else if (inIntro) {
+    console.log("clear feedback")
     inIntro = false
     readFiles()
     generateQuestions()
-    // quiz()
-
-    checkUnderstanding()
+    
   }
   // else if (!inQuiz) talkInGroup()
   else if (inQuiz) quizFeedback()
@@ -246,12 +330,4 @@ function quizFeedback() {
   $("#feedbackContainer").empty().show()
   $("#feedbackContainer").append("<h6>" + selfFeedback + "</h6>")
   $("#feedbackContainer").append("<h6> Also, " + othersFeedback + "</h6>")
-
-  if (othersScore < 160) {
-    $("#feedbackContainer").append("<button id='quizAgain' class='btn btn-outline-secondary'>Teach Each Other Again</button>")
-    $("#quizAgain").click(talkInGroup)
-    quizSelf = []
-    quizOthers = []
-  }
-
 }
