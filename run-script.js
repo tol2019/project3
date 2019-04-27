@@ -86,7 +86,6 @@ function generateQuestions() {
     let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <=0.9)
     console.log("Wrong answers", wrongAnswers)
 
-
     // generate random number for correct answers
     let correctNum = Math.random() * 4
     correctNum = Math.floor(correctNum) + 1
@@ -120,46 +119,6 @@ function generateQuestions() {
 
     quizQuestions.push(questionObj)
     console.log(quizQuestions)
-
-
-    let example = {
-      "name": "",
-      "text": "",
-      "buttons": [
-          {
-              "id": "b1",
-              "image": "",
-              "description": "",
-              "answer": true,
-              "feedback": "",
-              "whereTo": ""
-          },
-          {
-              "id": "b2",
-              "image": "",
-              "description": "",
-              "answer": false,
-              "feedback": "",
-              "whereTo": ""
-          },
-          {
-              "id": "b3",
-              "image": "",
-              "description": "",
-              "answer": false,
-              "feedback": "",
-              "whereTo": ""
-          },
-          {
-              "id": "b4",
-              "image": "",
-              "description": "",
-              "answer": false,
-              "feedback": "",
-              "whereTo": ""
-          }
-      ]
-  }
   })
 
   console.log("questions generated")
@@ -189,6 +148,7 @@ function makeQuestion(questions) {
   $("#questionContainer").show()
 
 }
+
 
 function giveFeedback(questions, cor, words, whereTo) {
   console.log("feedback", JSON.stringify(questions))
@@ -240,94 +200,7 @@ function clearFeedback(questions) {
   else if (inQuiz) quizFeedback()
 }
 
-function talkInGroup() {
-  $("#feedbackContainer").hide()
-  $("#teach").show()
-  $("#section").html("Talk with Each Other")
-  console.log("talk in group")
-
-  $("#teach").html("<h3>Talk with your partner about what you learned, and make sure they understand the following topics:</h3>")
-
-  let topics = [
-    "The name of your technique",
-    "The shape of the device (grinder or steel)",
-    "Why your technique does or does not result in particles on the knife",
-    "What condition of the knife does your technique fix",
-    "What happens to the knife during use of the device",
-    "Misconceptions held about your sharpening technique"
-  ]
-
-  for (let i in topics) {
-    $("#teach")
-      .append('<div class="form-check">' +
-        '<input type="checkbox" class="form-check-input">' +
-        '<label class="form-check-label" for="exampleCheck1">' + topics[i] + '</label>' +
-        '</div>')
-  }
-  $("#teach").append("<button id='goToQuiz' class='btn btn-outline-secondary'>Take a Quiz</button>")
-  $("#goToQuiz").hide()
-  $(".form-check").click(function () {
-    let checked = $('input[type=checkbox]:checked').siblings().text()
-    console.log(checked)
-
-
-    if (checked === topics.join("")) {
-      $("#goToQuiz").show().click(function () {
-        quiz()
-      })
-    } else {
-      $("#goToQuiz").hide()
-    }
-  })
-}
-
-function quiz() {
-  $("#section").html("Quiz")
-  inQuiz = true
-  qIndex = 0
-  console.log("doing quiz")
-
-  $("#teach").hide()
-  $("#feedbackContainer").hide()
-  $("#intro").hide()
-  console.log(questions)
-  currentQuestions = questions
-  makeQuestion(currentQuestions)
-}
 
 function quizFeedback() {
-  console.log("quizFeedback")
-  console.log("quizSelf:", quizSelf)
-  console.log("quizOthers:", quizOthers)
-  $("#section").html("Feedback!")
-  let selfScore = 0, othersScore = 0
-  let selfPoints = 10, othersPoints = 20
-  let bonus = 0
 
-  let selfFeedback = "", othersFeedback = ""
-
-  for (let i in quizSelf) {
-    if (quizSelf[i] === "true") selfScore += selfPoints
-  }
-  for (let i in quizOthers) {
-    if (quizOthers[i] === "true") othersScore += othersPoints
-  }
-
-  console.log("score", selfScore + othersScore + bonus)
-  if (selfScore < 40) {
-    selfFeedback = "You made some mistakes on the video that was assigned to you. You may want to revisit the video and try again."
-  } else {
-    selfFeedback = "Good work! You know your technique well."
-  }
-
-  if (othersScore < 100) {
-    othersFeedback = ""
-  } else if (othersScore < 160) {
-    othersFeedback = "there are a few points you missed on the other technique. You should teach each other again and retry the quiz."
-  } else {
-    othersFeedback = "you clearly know how both grinding and honing work and when to use each."
-  }
-  $("#feedbackContainer").empty().show()
-  $("#feedbackContainer").append("<h6>" + selfFeedback + "</h6>")
-  $("#feedbackContainer").append("<h6> Also, " + othersFeedback + "</h6>")
 }
