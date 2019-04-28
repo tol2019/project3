@@ -27,14 +27,18 @@ $(document).ready(function () {
   $("#teach").hide()
   $("#feedbackContainer").hide()
   $("#studentId").hide()
-  introductionText()
+  // introductionText()
+  inIntro = false
+  readFiles()
+  generateQuestions()
+
 })
 
 function introductionText() {
   $("#intro").show()
   qIndex = 0
   currentQuestions = introductionScripts
-  
+
   makeQuestion(currentQuestions)
 }
 
@@ -73,7 +77,7 @@ function generateQuestions() {
     let questionId = question['Question_id']
 
     // get all answers for this question with other info
-    let answers = answerData.data.filter(answer => answer['Question_id']===questionId)
+    let answers = answerData.data.filter(answer => answer['Question_id'] === questionId)
     console.log("answers", answers)
 
     // get all correct answers
@@ -83,7 +87,7 @@ function generateQuestions() {
 
     // get all incorrect answers
     // need more complex evaluation in the future
-    let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <=0.9)
+    let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
     console.log("Wrong answers", wrongAnswers)
 
     // generate random number for correct answers
@@ -94,14 +98,15 @@ function generateQuestions() {
     // push the first [correctNum] correct answers into answers
     let options = []
     options.push(...correctAnswers.slice(0, correctNum))
-    options.push(...wrongAnswers.slice(0, 4-correctNum))
+    options.push(...wrongAnswers.slice(0, 4 - correctNum))
     console.log("options", options)
 
     // generate JSON object and push to questions
     let buttons = []
-    options.forEach(option => {
+    options.forEach((option, index) => {
+      console.log("option index", index);
       let optionObj = {
-        "id": "b1",
+        "id": "b" + (index+1).toString(),
         "image": "",
         "description": option['Answer_text'],
         "answer": option['Student_score_on_question'] > 0.9 ? true : false,
@@ -132,19 +137,45 @@ function makeQuestion(questions) {
 
   let buttons = questions[qIndex].buttons
   $("#buttonContainer").empty()
+  $("<div/>", {
+    id: "answers-form"
+  }).addClass("answers-form")
+    .appendTo("#buttonContainer")
+
   buttons.forEach(b => {
-    $("<button/>", {
-      id: b.id,
-      text: b.description,
-    })
-      .addClass("options")
-      .attr("onClick", "giveFeedback(\"" + questions + "\",\"" + b.answer + "\",\"" + b.feedback + "\",\"" + b.whereTo + "\")")
-      .appendTo("#buttonContainer")
+    $("<div/>", {
+      id: "form-check-" + b.id
+    }).addClass("form-check").appendTo("#answers-form")
+
+    $("<input>", {
+      id: "input-" + b.id,
+      type: "checkbox"
+    }).addClass("options")
+      .addClass("form-check-input")
+      .appendTo("#form-check-" + b.id)
+
+    $("<label/>", {
+      text: b.description
+    }).addClass("form-check-label")
+      .appendTo("#form-check-" + b.id)
 
     if (b.image != "") {
-      $("<img>", { src: b.image }).appendTo("#" + b.id)
+      $("<img>", { src: b.image }).appendTo("#form-check-" + b.id)
     }
   })
+
+  $(".form-check").click(function () {
+    let checked = $('input[type=checkbox]:checked').siblings().text();
+    console.log(checked);
+
+
+    if (checked === topics.join("")) {
+
+    } else {
+      $("#goToQuiz").hide();
+    }
+  });
+
   $("#questionContainer").show()
 
 }
@@ -194,7 +225,7 @@ function clearFeedback(questions) {
     inIntro = false
     readFiles()
     generateQuestions()
-    
+
   }
   // else if (!inQuiz) talkInGroup()
   else if (inQuiz) quizFeedback()

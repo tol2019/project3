@@ -12,7 +12,6 @@ body {
 #container{
   border: 1px solid #ddd;
   width: 800px;
-  height: 600px;
   min-height: 600px;
 }
 .studentId div {
@@ -47,9 +46,7 @@ body {
   flex-wrap: wrap;
 }
 
-.options {
-  margin:10px;
-}
+
 
 footer {
   width: 800px;
