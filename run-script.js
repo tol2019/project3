@@ -73,7 +73,7 @@ function readFiles() {
 
 function generateQuestions() {
   let questions = questionData.data
-  
+
 
   questions.forEach(question => {
     correctAnswerKey = ""
@@ -110,14 +110,14 @@ function generateQuestions() {
     options.forEach((option, index) => {
       console.log("option index", index);
       let optionObj = {
-        "id": "b" + (index+1).toString(),
+        "id": "b" + (index + 1).toString(),
         "image": "",
         "description": option['Answer_text'],
         "answer": option['Student_score_on_question'] > 0.9 ? true : false,
         "feedback": "",
         "whereTo": ""
       }
-      if(optionObj.answer === true){
+      if (optionObj.answer === true) {
         correctAnswerKey += optionObj.description
       }
       buttons.push(optionObj)
@@ -176,23 +176,25 @@ function makeQuestion(questions) {
   $("<button/>", {
     text: "Check Answer!"
   }).addClass("btn btn-outline-secondary")
-      .appendTo("#buttonContainer")
-      .click(function (){
-        console.log(checked)
-        console.log(correctAnswerKey)
-        if (checked == questions[qIndex].correct){
-          console.log("correct!")
-        }else{
-          console.log("incorrect!")
-        }
-      })
-  
+    .appendTo("#buttonContainer")
+    .click(function () {
+      let cor = false
+      let feedback = ""
+      console.log(checked)
+      console.log(correctAnswerKey)
+      if (checked == questions[qIndex].correct) {
+        feedback = "correct!"
+        cor = true
+      } else {
+        feedback = "incorrect!"
+      }
+      giveFeedback(currentQuestions, cor, feedback, "")
+    })
+
   $(".form-check").click(function () {
     checked = $('input[type=checkbox]:checked').siblings().text();
     console.log(checked);
   });
-
-
 
   $("#questionContainer").show()
 
@@ -205,7 +207,7 @@ function giveFeedback(questions, cor, words, whereTo) {
   $("#feedbackContainer").show()
 
   if (!inQuiz && !inIntro) {
-    if (cor === 'true') {
+    if (cor === true) {
       $("<h3/>", { text: "Correct!" })
         .css('background-color', '#99ff99')
         .appendTo("#feedbackContainer")
