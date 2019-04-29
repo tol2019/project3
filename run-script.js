@@ -15,6 +15,7 @@ let finalQuizQuestions = {}
 let qIndex = 0
 let inIntro = true
 let inQuiz = false
+let correctAnswers = ""
 
 let questionData = []
 let answerData = []
@@ -72,7 +73,10 @@ function readFiles() {
 
 function generateQuestions() {
   let questions = questionData.data
+  
+
   questions.forEach(question => {
+    correctAnswerKey = ""
 
     let questionId = question['Question_id']
 
@@ -113,13 +117,18 @@ function generateQuestions() {
         "feedback": "",
         "whereTo": ""
       }
+      if(optionObj.answer === true){
+        correctAnswerKey += optionObj.description
+      }
       buttons.push(optionObj)
     })
+    console.log("correct answers:", correctAnswerKey)
 
     let questionObj = {
       "name": question['Question_id'],
       "text": question['Question_text'],
-      "buttons": buttons
+      "buttons": buttons,
+      "correct": correctAnswerKey
     }
 
     quizQuestions.push(questionObj)
@@ -163,18 +172,27 @@ function makeQuestion(questions) {
       $("<img>", { src: b.image }).appendTo("#form-check-" + b.id)
     }
   })
-
+  let checked = ""
+  $("<button/>", {
+    text: "Check Answer!"
+  }).addClass("btn btn-outline-secondary")
+      .appendTo("#buttonContainer")
+      .click(function (){
+        console.log(checked)
+        console.log(correctAnswerKey)
+        if (checked == questions[qIndex].correct){
+          console.log("correct!")
+        }else{
+          console.log("incorrect!")
+        }
+      })
+  
   $(".form-check").click(function () {
-    let checked = $('input[type=checkbox]:checked').siblings().text();
+    checked = $('input[type=checkbox]:checked').siblings().text();
     console.log(checked);
-
-
-    if (checked === topics.join("")) {
-
-    } else {
-      $("#goToQuiz").hide();
-    }
   });
+
+
 
   $("#questionContainer").show()
 
