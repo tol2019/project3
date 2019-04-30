@@ -55,20 +55,21 @@ function checkUnderstanding() {
 function readFiles() {
 
 
-  $.get('project3_data/Answers_data_prj3_updated.csv').done(data => {
-    // trying PapaParse
-    answerData = Papa.parse(data, parseConfig)
-    console.log("answer data:", answerData)
+  $.get('project3_data/Answers_data_prj3_updated.csv')
+    .done(data => {
+      // trying PapaParse
+      answerData = Papa.parse(data, parseConfig)
+      console.log("answer data:", answerData)
 
-    $.get('project3_data/Questions_data_prj3.csv').done(data => {
-      questionData = Papa.parse(data, parseConfig)
-      console.log("question data", questionData)
+      $.get('project3_data/Questions_data_prj3.csv').done(data => {
+        questionData = Papa.parse(data, parseConfig)
+        console.log("question data", questionData)
 
-      generateQuestions()
+        generateQuestions()
+
+      })
 
     })
-
-  })
 }
 
 function generateQuestions() {
