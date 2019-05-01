@@ -22,6 +22,8 @@ let answerData = []
 
 let quizQuestions = []
 
+let answerResults = []
+
 $(document).ready(function () {
   // $("#button-container").hide()
   $("#intro").hide()
@@ -74,6 +76,7 @@ function readFiles() {
 
 function generateQuestions() {
   let questions = questionData.data
+  answerResults = []
 
 
   questions.forEach(question => {
@@ -108,6 +111,7 @@ function generateQuestions() {
 
     // generate JSON object and push to questions
     let buttons = []
+    let answerResult = []
     options.forEach((option, index) => {
       console.log("option index", index);
       let optionObj = {
@@ -118,23 +122,31 @@ function generateQuestions() {
         "feedback": "",
         "whereTo": ""
       }
-      if (optionObj.answer === true) {
-        correctAnswerKey += optionObj.description
-      }
+      answerResult.push({
+        "key": optionObj.answer,
+        "selected": false
+      })
       buttons.push(optionObj)
     })
     console.log("correct answers:", correctAnswerKey)
+    answerResults.push({answerResult, "answered": false});
+
 
     let questionObj = {
       "name": question['Question_id'],
       "text": question['Question_text'],
       "buttons": buttons,
-      "correct": correctAnswerKey
+      "result": {
+        answerResult, 
+        "answered": false
+      }
     }
 
     quizQuestions.push(questionObj)
-    console.log(quizQuestions)
+    console.log("quizQuestions", quizQuestions)
   })
+
+  console.log("questions and results", answerResults)
 
   console.log("questions generated")
   checkUnderstanding()
@@ -182,12 +194,25 @@ function makeQuestion(questions) {
       let cor = false
       let feedback = ""
       console.log(checked)
-      console.log(correctAnswerKey)
+      let results = $('input');
+      console.log("results", results)
+      answerResults[qIndex].answered = true
+      quizQuestions[qIndex].result.answered = true
+      for (let index = 0; index < results.length; index++) {
+        if (results[index].checked) {
+          answerResults[qIndex].answerResult[index].selected = true
+          quizQuestions[qIndex].result.answerResult[index].selected = true
+        }
+      }
+      console.log("answerResults", answerResults)
+      console.log("quizQuestions", quizQuestions)
+
       if (checked == questions[qIndex].correct) {
         feedback = "correct!"
         cor = true
       } else {
         feedback = "incorrect!"
+
       }
       giveFeedback(currentQuestions, cor, feedback, "")
     })
@@ -203,7 +228,7 @@ function makeQuestion(questions) {
 
 
 function giveFeedback(questions, cor, words, whereTo) {
-  console.log("feedback", JSON.stringify(questions))
+  // console.log("feedback", JSON.stringify(questions))
   $("#questionContainer").hide()
   $("#feedbackContainer").show()
 
@@ -217,7 +242,8 @@ function giveFeedback(questions, cor, words, whereTo) {
         .css('background-color', '#ff6699')
         .appendTo("#feedbackContainer")
 
-      currentQuestions.push(currentQuestions[qIndex])
+      // regenerateQuestion();
+      // currentQuestions.push(currentQuestions[qIndex])
     }
     $("<p/>", { text: words }).appendTo("#feedbackContainer")
 
@@ -249,10 +275,23 @@ function clearFeedback(questions) {
 
   }
   // else if (!inQuiz) talkInGroup()
-  else if (inQuiz) quizFeedback()
+  else quizFeedback()
+}
+
+// question answer status
+// correct options
+// student choice
+// matched label green
+// not matched label red
+function quizFeedback() {
+
 }
 
 
-function quizFeedback() {
+// regenerate this question for retaking.
+// what data can be used?
+// select different options
+// keep track of what options the player answered correctly
+function regenerateQuestion() {
 
 }
