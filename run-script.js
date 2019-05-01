@@ -129,7 +129,7 @@ function generateQuestions() {
       buttons.push(optionObj)
     })
     console.log("correct answers:", correctAnswerKey)
-    answerResults.push({answerResult, "answered": false});
+    answerResults.push({ answerResult, "answered": false });
 
 
     let questionObj = {
@@ -137,7 +137,7 @@ function generateQuestions() {
       "text": question['Question_text'],
       "buttons": buttons,
       "result": {
-        answerResult, 
+        answerResult,
         "answered": false
       }
     }
@@ -154,6 +154,8 @@ function generateQuestions() {
 
 
 function makeQuestion(questions) {
+  $("#feedbackContainer").empty().hide()
+
   $("#currQuestion").text(questions[qIndex].text)
   // makeButtons(questions)
 
@@ -262,7 +264,7 @@ function giveFeedback(questions, cor, words, whereTo) {
 
 
 function clearFeedback(questions) {
-  console.log("feedback", questions)
+  // console.log("feedback", questions)
   $("#feedbackContainer").empty().hide()
   qIndex += 1
   if (qIndex < currentQuestions.length) {
@@ -284,6 +286,16 @@ function clearFeedback(questions) {
 // matched label green
 // not matched label red
 function quizFeedback() {
+  $("#feedbackContainer").show();
+  $("<button/>", { text: "Take the quiz again!" })
+    .addClass("btn btn-outline-secondary quiz-again")
+    .appendTo("#feedbackContainer")
+
+  $(".quiz-again").click(function () {
+
+    readFiles()
+    generateQuestions()
+  })
 
 }
 
