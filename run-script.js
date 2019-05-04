@@ -77,6 +77,8 @@ function readFiles() {
 function generateQuestions() {
   let questions = questionData.data
   answerResults = []
+  quizQuestions = []
+  qIndex = 0;
 
 
   questions.forEach(question => {
@@ -200,6 +202,7 @@ function makeQuestion(questions) {
       console.log("results", results)
       answerResults[qIndex].answered = true
       quizQuestions[qIndex].result.answered = true
+      console.log(qIndex)
       for (let index = 0; index < results.length; index++) {
         if (results[index].checked) {
           answerResults[qIndex].answerResult[index].selected = true
@@ -286,6 +289,9 @@ function clearFeedback(questions) {
 // matched label green
 // not matched label red
 function quizFeedback() {
+  
+
+
   $("#feedbackContainer").show();
   $("<button/>", { text: "Take the quiz again!" })
     .addClass("btn btn-outline-secondary quiz-again")
