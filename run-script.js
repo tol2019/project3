@@ -88,12 +88,14 @@ function generateQuestions(quizRound) {
 
     // get all correct answers
     // need more complex evaluation in the future
-    let correctAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
+    // let correctAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
+    let correctAnswers = selectCorrectAnswers(answers)
     console.log("correctAnswers", correctAnswers)
 
     // get all incorrect answers
     // need more complex evaluation in the future
-    let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
+    // let wrongAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
+    let wrongAnswers = selectWrongAnswers(answers)
     console.log("Wrong answers", wrongAnswers)
 
     // generate random number for correct answers
@@ -382,4 +384,14 @@ function shuffleOptions(options) {
   console.log("optionsShuffled", optionsShuffled)
 
   return optionsShuffled
+}
+
+function selectCorrectAnswers(answers){
+  let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
+  return selectedAnswers
+}
+
+function selectWrongAnswers(answers){
+  let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
+  return selectedAnswers
 }
