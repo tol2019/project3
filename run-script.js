@@ -189,6 +189,7 @@ function makeQuestion(questions) {
   })
   let checked = ""
   $("<button/>", {
+    id: "check-answer",
     text: "Check Answer!"
   }).addClass("btn btn-outline-secondary")
     .appendTo("#buttonContainer")
@@ -215,7 +216,6 @@ function makeQuestion(questions) {
         cor = true
       } else {
         feedback = "incorrect!"
-
       }
       giveFeedback(currentQuestions, cor, feedback, "")
     })
@@ -234,16 +234,12 @@ function giveFeedback(questions, cor, words, whereTo) {
   // console.log("feedback", JSON.stringify(questions))
   // $("#questionContainer").hide()
   $("#feedbackContainer").empty().show()
+  $("#check-answer").hide()
+
+  let correct = true;
 
   if (!inQuiz && !inIntro) {
-  //   if (cor === true) {
-  //     $("<h3/>", { text: "Correct!" })
-  //       .css('background-color', '#99ff99')
-  //       .appendTo("#feedbackContainer")
-  //   } else {
-  //     $("<h3/>", { text: "That's not correct..." })
-  //       .css('background-color', '#ff6699')
-  //       .appendTo("#feedbackContainer")
+    
 
   //     //ORIGINAL THOUGHTS
   //     // if one question is answered incorrectly 
@@ -251,7 +247,7 @@ function giveFeedback(questions, cor, words, whereTo) {
   //     // enabling the learner to take the quiz again 
   //     // regenerateQuestion();
   //     // currentQuestions.push(currentQuestions[qIndex])
-  //   }
+  
 
 
     /**
@@ -264,13 +260,30 @@ function giveFeedback(questions, cor, words, whereTo) {
       if(option.selected){
         $("#form-check-b"+(index+1)+" .form-check-label").css({"font-weight": "bold"})
       }
-      if (option.selected === option.key) {
+      // if (option.selected === option.key) {
+      //   $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
+      // } else {
+      //   $("#form-check-b"+(index+1)).css({"border": "2px solid red", "background-color":"rgba(255, 36, 36, 0.25)"})
+      // }
+      if (option.selected !== option.key) {
+        correct = false
+      }
+      if (option.key) {
         $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
       } else {
         $("#form-check-b"+(index+1)).css({"border": "2px solid red", "background-color":"rgba(255, 36, 36, 0.25)"})
       }
     })
 
+    if (correct) {
+      $("<h3/>", { text: "Correct!" })
+        .css('background-color', '#99ff99')
+        .appendTo("#feedbackContainer")
+    } else {
+      $("<h3/>", { text: "That's not correct..." })
+        .css('background-color', '#ff6699')
+        .appendTo("#feedbackContainer")
+    }
 
     // $("<p/>", { text: words }).appendTo("#feedbackContainer")
 
