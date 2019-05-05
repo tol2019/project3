@@ -349,7 +349,7 @@ function clearFeedback() {
 function quizFeedback() {
 
   $("#feedbackContainer").show();
-  $("<button/>", { text: "Take the quiz again!" })
+  $("<button/>", { text: "I'm ready for the challenge!" })
     .addClass("btn btn-outline-secondary quiz-again")
     .appendTo("#feedbackContainer")
 
@@ -388,10 +388,12 @@ function shuffleOptions(options) {
 
 function selectCorrectAnswers(answers){
   let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
+  selectedAnswers = shuffleOptions(selectedAnswers)
   return selectedAnswers
 }
 
 function selectWrongAnswers(answers){
   let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
+  selectedAnswers = shuffleOptions(selectedAnswers)
   return selectedAnswers
 }
