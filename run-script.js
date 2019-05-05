@@ -282,10 +282,15 @@ function giveFeedback(questions, cor, words, whereTo) {
       $("<h3/>", { text: "Correct!" })
         .css('background-color', '#99ff99')
         .appendTo("#feedbackContainer")
+        qIndex += 1
     } else {
       $("<h3/>", { text: "That's not correct..." })
         .css('background-color', '#ff6699')
         .appendTo("#feedbackContainer")
+
+        for (let index = 0; index < quizQuestions[qIndex].result.answerResult.length; index++) {
+            quizQuestions[qIndex].result.answerResult[index].selected = false
+        }
     }
 
     // $("<p/>", { text: words }).appendTo("#feedbackContainer")
@@ -308,7 +313,7 @@ function giveFeedback(questions, cor, words, whereTo) {
 function clearFeedback() {
   // console.log("feedback", questions)
   $("#feedbackContainer").empty().hide()
-  qIndex += 1
+  
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
   } else if (inIntro) {
