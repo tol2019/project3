@@ -177,12 +177,23 @@ function makeQuestion(questions) {
       id: "form-check-" + b.id
     }).addClass("form-check").appendTo("#answers-form")
 
-    $("<input>", {
-      id: "input-" + b.id,
-      type: "checkbox"
-    }).addClass("options")
-      .addClass("form-check-input")
-      .appendTo("#form-check-" + b.id)
+    if(quizRound === 1){
+      $("<input>", {
+        id: "input-" + b.id,
+        type: "radio", 
+        name: "options"
+      }).addClass("options")
+        .addClass("form-check-input")
+        .appendTo("#form-check-" + b.id)
+    }else{
+      $("<input>", {
+        id: "input-" + b.id,
+        type: "checkbox"
+      }).addClass("options")
+        .addClass("form-check-input")
+        .appendTo("#form-check-" + b.id)
+    }
+    
 
     $("<label/>", {
       text: b.description
@@ -333,8 +344,6 @@ function clearFeedback() {
 // matched label green
 // not matched label red
 function quizFeedback() {
-
-
 
   $("#feedbackContainer").show();
   $("<button/>", { text: "Take the quiz again!" })
