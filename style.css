@@ -57,3 +57,8 @@ footer {
 #quizAgain, #videoAgain{
   margin: 10px;
 }
+
+.form-check{
+  margin: 15px;
+  border-radius: 5px;
+}

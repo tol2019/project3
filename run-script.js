@@ -8,7 +8,7 @@ const parseConfig = {
   header: true
 }
 
-let studentId = ""
+let quizRound = 1
 let scene = 0
 let expertQuizQuestions = {}
 let finalQuizQuestions = {}
@@ -55,8 +55,6 @@ function checkUnderstanding() {
 }
 
 function readFiles() {
-
-
   $.get('project3_data/Answers_data_prj3_updated.csv')
     .done(data => {
       // trying PapaParse
@@ -156,10 +154,10 @@ function generateQuestions() {
 
 
 function makeQuestion(questions) {
+  // $("#questionContainer").empty()
   $("#feedbackContainer").empty().hide()
 
   $("#currQuestion").text(questions[qIndex].text)
-  // makeButtons(questions)
 
   let buttons = questions[qIndex].buttons
   $("#buttonContainer").empty()
@@ -234,28 +232,53 @@ function makeQuestion(questions) {
 
 function giveFeedback(questions, cor, words, whereTo) {
   // console.log("feedback", JSON.stringify(questions))
-  $("#questionContainer").hide()
-  $("#feedbackContainer").show()
+  // $("#questionContainer").hide()
+  $("#feedbackContainer").empty().show()
 
   if (!inQuiz && !inIntro) {
-    if (cor === true) {
-      $("<h3/>", { text: "Correct!" })
-        .css('background-color', '#99ff99')
-        .appendTo("#feedbackContainer")
-    } else {
-      $("<h3/>", { text: "That's not correct..." })
-        .css('background-color', '#ff6699')
-        .appendTo("#feedbackContainer")
+  //   if (cor === true) {
+  //     $("<h3/>", { text: "Correct!" })
+  //       .css('background-color', '#99ff99')
+  //       .appendTo("#feedbackContainer")
+  //   } else {
+  //     $("<h3/>", { text: "That's not correct..." })
+  //       .css('background-color', '#ff6699')
+  //       .appendTo("#feedbackContainer")
 
-      // regenerateQuestion();
-      // currentQuestions.push(currentQuestions[qIndex])
-    }
-    $("<p/>", { text: words }).appendTo("#feedbackContainer")
+  //     //ORIGINAL THOUGHTS
+  //     // if one question is answered incorrectly 
+  //     // push them to the end of the array
+  //     // enabling the learner to take the quiz again 
+  //     // regenerateQuestion();
+  //     // currentQuestions.push(currentQuestions[qIndex])
+  //   }
+
+
+    /**
+     * CORRECTNESS FEEDBACK
+     * show selected in bold
+     * if correct, display as green
+     * if wrong, display as red
+     */
+    quizQuestions[qIndex].result.answerResult.forEach((option, index) => {
+      if(option.selected){
+        $("#form-check-b"+(index+1)+" .form-check-label").css({"font-weight": "bold"})
+      }
+      if (option.selected === option.key) {
+        $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
+      } else {
+        $("#form-check-b"+(index+1)).css({"border": "2px solid red", "background-color":"rgba(255, 36, 36, 0.25)"})
+      }
+    })
+
+
+    // $("<p/>", { text: words }).appendTo("#feedbackContainer")
 
     $("<button/>", { text: "Continue" })
-      .attr("onClick", "clearFeedback(\"" + questions + "\")")
+      .attr("onClick", "clearFeedback()")
       .addClass("btn btn-outline-secondary")
       .appendTo("#feedbackContainer")
+      // .appendTo("#questionContainer")
 
   } else if (inIntro) {
     clearFeedback()
@@ -266,7 +289,7 @@ function giveFeedback(questions, cor, words, whereTo) {
 }
 
 
-function clearFeedback(questions) {
+function clearFeedback() {
   // console.log("feedback", questions)
   $("#feedbackContainer").empty().hide()
   qIndex += 1
@@ -289,7 +312,7 @@ function clearFeedback(questions) {
 // matched label green
 // not matched label red
 function quizFeedback() {
-  
+
 
 
   $("#feedbackContainer").show();
