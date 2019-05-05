@@ -33,7 +33,7 @@ $(document).ready(function () {
   // introductionText()
   inIntro = false
   readFiles()
-  generateQuestions()
+  generateQuestions(quizRound)
 
 })
 
@@ -55,24 +55,25 @@ function checkUnderstanding() {
 }
 
 function readFiles() {
-  $.get('project3_data/Answers_data_prj3_updated.csv')
+  $.get('project3_data/Answers.csv')
     .done(data => {
-      // trying PapaParse
+      // PapaParse
       answerData = Papa.parse(data, parseConfig)
       console.log("answer data:", answerData)
 
-      $.get('project3_data/Questions_data_prj3.csv').done(data => {
+      $.get('project3_data/Questions.csv').done(data => {
         questionData = Papa.parse(data, parseConfig)
         console.log("question data", questionData)
 
-        generateQuestions()
+        generateQuestions(quizRound)
 
       })
 
     })
 }
 
-function generateQuestions() {
+function generateQuestions(quizRound) {
+  console.log("quiz round", quizRound)
   let questions = questionData.data
   answerResults = []
   quizQuestions = []
@@ -99,9 +100,17 @@ function generateQuestions() {
     console.log("Wrong answers", wrongAnswers)
 
     // generate random number for correct answers
-    let correctNum = Math.random() * 4
-    correctNum = Math.floor(correctNum) + 1
-    console.log(correctNum)
+    // quiz round 1, only one correct
+    // round 2 only 2?
+    let correctNum = 0
+    if (quizRound == 1) {
+      correctNum = 1
+    } else {
+      correctNum = Math.random() * 4
+      correctNum = Math.floor(correctNum) + 1
+      console.log(correctNum)
+    }
+
 
     // push the first [correctNum] correct answers into answers
     let options = []
@@ -239,15 +248,15 @@ function giveFeedback(questions, cor, words, whereTo) {
   let correct = true;
 
   if (!inQuiz && !inIntro) {
-    
 
-  //     //ORIGINAL THOUGHTS
-  //     // if one question is answered incorrectly 
-  //     // push them to the end of the array
-  //     // enabling the learner to take the quiz again 
-  //     // regenerateQuestion();
-  //     // currentQuestions.push(currentQuestions[qIndex])
-  
+
+    // ORIGINAL THOUGHTS
+    // if one question is answered incorrectly 
+    // push them to the end of the array
+    // enabling the learner to take the quiz again 
+    // regenerateQuestion();
+    // currentQuestions.push(currentQuestions[qIndex])
+
 
 
     /**
@@ -257,8 +266,8 @@ function giveFeedback(questions, cor, words, whereTo) {
      * if wrong, display as red
      */
     quizQuestions[qIndex].result.answerResult.forEach((option, index) => {
-      if(option.selected){
-        $("#form-check-b"+(index+1)+" .form-check-label").css({"font-weight": "bold"})
+      if (option.selected) {
+        $("#form-check-b" + (index + 1) + " .form-check-label").css({ "font-weight": "bold" })
       }
       // if (option.selected === option.key) {
       //   $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
@@ -269,9 +278,9 @@ function giveFeedback(questions, cor, words, whereTo) {
         correct = false
       }
       if (option.key) {
-        $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid green", "background-color": "rgba(36, 255, 36, 0.25)" })
       } else {
-        $("#form-check-b"+(index+1)).css({"border": "2px solid red", "background-color":"rgba(255, 36, 36, 0.25)"})
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid red", "background-color": "rgba(255, 36, 36, 0.25)" })
       }
     })
 
@@ -291,7 +300,7 @@ function giveFeedback(questions, cor, words, whereTo) {
       .attr("onClick", "clearFeedback()")
       .addClass("btn btn-outline-secondary")
       .appendTo("#feedbackContainer")
-      // .appendTo("#questionContainer")
+    // .appendTo("#questionContainer")
 
   } else if (inIntro) {
     clearFeedback()
@@ -312,7 +321,7 @@ function clearFeedback() {
     console.log("clear feedback")
     inIntro = false
     readFiles()
-    generateQuestions()
+    generateQuestions(quizRound)
 
   }
   // else if (!inQuiz) talkInGroup()
@@ -334,9 +343,9 @@ function quizFeedback() {
     .appendTo("#feedbackContainer")
 
   $(".quiz-again").click(function () {
-
+    quizRound = 2
     readFiles()
-    generateQuestions()
+    generateQuestions(quizRound)
   })
 
 }
