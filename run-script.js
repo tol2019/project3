@@ -118,6 +118,9 @@ function generateQuestions(quizRound) {
     options.push(...wrongAnswers.slice(0, 4 - correctNum))
     console.log("options", options)
 
+    let optionsShuffled = shuffleOptions(options)
+    options = optionsShuffled
+
     // generate JSON object and push to questions
     let buttons = []
     let answerResult = []
@@ -137,9 +140,6 @@ function generateQuestions(quizRound) {
       })
       buttons.push(optionObj)
     })
-    console.log("correct answers:", correctAnswerKey)
-    answerResults.push({ answerResult, "answered": false });
-
 
     let questionObj = {
       "name": question['Question_id'],
@@ -155,7 +155,7 @@ function generateQuestions(quizRound) {
     console.log("quizQuestions", quizQuestions)
   })
 
-  console.log("questions and results", answerResults)
+
 
   console.log("questions generated")
   checkUnderstanding()
@@ -208,12 +208,10 @@ function makeQuestion(questions) {
       console.log(checked)
       let results = $('input');
       console.log("results", results)
-      answerResults[qIndex].answered = true
       quizQuestions[qIndex].result.answered = true
       console.log(qIndex)
       for (let index = 0; index < results.length; index++) {
         if (results[index].checked) {
-          answerResults[qIndex].answerResult[index].selected = true
           quizQuestions[qIndex].result.answerResult[index].selected = true
         }
       }
@@ -357,4 +355,20 @@ function quizFeedback() {
 // keep track of what options the player answered correctly
 function regenerateQuestion() {
 
+}
+
+function shuffleOptions(options) {
+  let optionsShuffled = []
+  let tmpOptions = options
+  while (tmpOptions.length > 0) {
+    let random = Math.random() * tmpOptions.length
+    random = Math.floor(random)
+    console.log("random", random)
+    let selected = tmpOptions.splice(random, 1)
+    console.log("selected", selected)
+    optionsShuffled.push(selected[0])
+  }
+  console.log("optionsShuffled", optionsShuffled)
+
+  return optionsShuffled
 }
