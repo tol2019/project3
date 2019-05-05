@@ -164,7 +164,12 @@ function generateQuestions(quizRound) {
 function makeQuestion(questions) {
   // $("#questionContainer").empty()
   $("#feedbackContainer").empty().hide()
-  $("#q-num").empty().html("<h2>question " + (qIndex+1) + " of " + quizQuestions.length + "</h2>")
+  if (quizRound === 1) {
+    $("#q-num").empty().html("<h2>Warm Up: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
+  } else {
+    $("#q-num").empty().html("<h2>Quiz: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
+  }
+
 
   $("#currQuestion").text(questions[qIndex].text)
 
@@ -180,15 +185,15 @@ function makeQuestion(questions) {
       id: "form-check-" + b.id
     }).addClass("form-check").appendTo("#answers-form")
 
-    if(quizRound === 1){
+    if (quizRound === 1) {
       $("<input>", {
         id: "input-" + b.id,
-        type: "radio", 
+        type: "radio",
         name: "options"
       }).addClass("options")
         .addClass("form-check-input")
         .appendTo("#form-check-" + b.id)
-    }else{
+    } else {
       $("<input>", {
         id: "input-" + b.id,
         type: "checkbox"
@@ -196,7 +201,7 @@ function makeQuestion(questions) {
         .addClass("form-check-input")
         .appendTo("#form-check-" + b.id)
     }
-    
+
 
     $("<label/>", {
       text: b.description
@@ -296,15 +301,15 @@ function giveFeedback(questions, cor, words, whereTo) {
       $("<h3/>", { text: "Correct!" })
         .css('background-color', '#99ff99')
         .appendTo("#feedbackContainer")
-        qIndex += 1
+      qIndex += 1
     } else {
       $("<h3/>", { text: "That's not correct..." })
         .css('background-color', '#ff6699')
         .appendTo("#feedbackContainer")
 
-        for (let index = 0; index < quizQuestions[qIndex].result.answerResult.length; index++) {
-            quizQuestions[qIndex].result.answerResult[index].selected = false
-        }
+      for (let index = 0; index < quizQuestions[qIndex].result.answerResult.length; index++) {
+        quizQuestions[qIndex].result.answerResult[index].selected = false
+      }
     }
 
     // $("<p/>", { text: words }).appendTo("#feedbackContainer")
@@ -327,7 +332,7 @@ function giveFeedback(questions, cor, words, whereTo) {
 function clearFeedback() {
   // console.log("feedback", questions)
   $("#feedbackContainer").empty().hide()
-  
+
   if (qIndex < currentQuestions.length) {
     makeQuestion(currentQuestions)
   } else if (inIntro) {
@@ -386,13 +391,13 @@ function shuffleOptions(options) {
   return optionsShuffled
 }
 
-function selectCorrectAnswers(answers){
+function selectCorrectAnswers(answers) {
   let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) > 0.9)
   selectedAnswers = shuffleOptions(selectedAnswers)
   return selectedAnswers
 }
 
-function selectWrongAnswers(answers){
+function selectWrongAnswers(answers) {
   let selectedAnswers = answers.filter(answer => parseInt(answer['Student_score_on_question']) <= 0.9)
   selectedAnswers = shuffleOptions(selectedAnswers)
   return selectedAnswers
