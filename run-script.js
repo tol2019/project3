@@ -162,6 +162,7 @@ function generateQuestions(quizRound) {
 function makeQuestion(questions) {
   // $("#questionContainer").empty()
   $("#feedbackContainer").empty().hide()
+  $("#q-num").empty().html("<h2>question " + (qIndex+1) + " of " + quizQuestions.length + "</h2>")
 
   $("#currQuestion").text(questions[qIndex].text)
 

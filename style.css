@@ -30,7 +30,7 @@ body {
   /* justify-content: space-between; */
   margin: auto;
   width: 800px;
-  padding-top: 50px;
+  padding-top: 25px;
 }
 
 #questionContainer, #buttonContainer, #feedbackContainer {
