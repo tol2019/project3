@@ -22,8 +22,6 @@ let answerData = []
 
 let quizQuestions = []
 
-let answerResults = []
-
 $(document).ready(function () {
   // $("#button-container").hide()
   $("#intro").hide()
@@ -75,7 +73,6 @@ function readFiles() {
 function generateQuestions(quizRound) {
   console.log("quiz round", quizRound)
   let questions = questionData.data
-  answerResults = []
   quizQuestions = []
   qIndex = 0;
 
@@ -215,7 +212,6 @@ function makeQuestion(questions) {
           quizQuestions[qIndex].result.answerResult[index].selected = true
         }
       }
-      console.log("answerResults", answerResults)
       console.log("quizQuestions", quizQuestions)
 
       if (checked == questions[qIndex].correct) {
