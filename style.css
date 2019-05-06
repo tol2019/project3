@@ -59,6 +59,19 @@ footer {
 }
 
 .form-check{
-  margin: 15px;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  border-radius: 3px;
+  padding: 10px 0px 10px 10px;
+}
+.form-check-input{
+  position: relative;
+  margin: 0 10px;
+}
+
+.form-check label{
+  width: 90%;
+  margin-left: 10px;
+  padding: 0 5px;
 }

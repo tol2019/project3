@@ -285,9 +285,9 @@ function giveFeedback(questions, cor, words, whereTo) {
         correct = false
       }
       if (option.key) {
-        $("#form-check-b" + (index + 1)).css({ "border": "2px solid green", "background-color": "rgba(36, 255, 36, 0.25)" })
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
       } else {
-        $("#form-check-b" + (index + 1)).css({ "border": "2px solid red", "background-color": "rgba(255, 36, 36, 0.25)" })
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
       }
     })
 
