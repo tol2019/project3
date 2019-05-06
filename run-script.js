@@ -307,6 +307,8 @@ function giveFeedback(questions, cor, words, whereTo) {
         .css('background-color', '#ff6699')
         .appendTo("#feedbackContainer")
 
+      if(quizRound === 2) qIndex += 1
+
       for (let index = 0; index < quizQuestions[qIndex].result.answerResult.length; index++) {
         quizQuestions[qIndex].result.answerResult[index].selected = false
       }
