@@ -260,7 +260,7 @@ function giveFeedback(questions, cor, words, whereTo) {
 
   // disable the inputs
 
-  $(".options").attr({"disabled": "disabled"})
+  $(".options").attr({ "disabled": "disabled" })
 
   let correct = true;
 
@@ -284,27 +284,37 @@ function giveFeedback(questions, cor, words, whereTo) {
       if (option.selected !== option.key) {
         correct = false
       }
-      if (option.key) {
-        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
+      if (quizRound === 1 || quizRound === 2) {
+        if (option.key) {
+          $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
+        }
+        if (!correct && option.selected) {
+          $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
+        }
       } else {
-        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
+        // if (option.key) {
+        //   $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
+        // } else {
+        //   $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
+        // }
       }
+
     })
 
     if (correct) {
       $("<h3/>", { text: "Correct!" })
-        .css('background-color', '#99ff99')
+        .css({"background-color": "rgba(36, 255, 36, 0.25)"})
         .appendTo("#feedbackContainer")
       qIndex += 1
     } else {
       $("<h3/>", { text: "That's not correct..." })
-        .css('background-color', '#ff6699')
+        .css({"background-color": "rgba(255, 36, 36, 0.1)"})
         .appendTo("#feedbackContainer")
 
-      
-      if(quizRound === 2) {
+
+      if (quizRound === 2) {
         qIndex += 1
-      }else{
+      } else {
         for (let index = 0; index < quizQuestions[qIndex].result.answerResult.length; index++) {
           quizQuestions[qIndex].result.answerResult[index].selected = false
         }
