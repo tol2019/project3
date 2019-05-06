@@ -284,20 +284,13 @@ function giveFeedback(questions, cor, words, whereTo) {
       if (option.selected !== option.key) {
         correct = false
       }
-      if (quizRound === 1 || quizRound === 2) {
+      
         if (option.key) {
           $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
         }
         if (!correct && option.selected) {
           $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
         }
-      } else {
-        // if (option.key) {
-        //   $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
-        // } else {
-        //   $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
-        // }
-      }
 
     })
 
