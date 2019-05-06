@@ -258,19 +258,13 @@ function giveFeedback(questions, cor, words, whereTo) {
   $("#feedbackContainer").empty().show()
   $("#check-answer").hide()
 
+  // disable the inputs
+
+  $(".options").attr({"disabled": "disabled"})
+
   let correct = true;
 
   if (!inQuiz && !inIntro) {
-
-
-    // ORIGINAL THOUGHTS
-    // if one question is answered incorrectly 
-    // push them to the end of the array
-    // enabling the learner to take the quiz again 
-    // regenerateQuestion();
-    // currentQuestions.push(currentQuestions[qIndex])
-
-
 
     /**
      * CORRECTNESS FEEDBACK
