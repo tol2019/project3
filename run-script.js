@@ -52,13 +52,13 @@ function checkUnderstanding() {
 }
 
 function readFiles() {
-  $.get('project3_data/validation/Answers.csv')
+  $.get('project3_data/test/Answers.csv')
     .done(data => {
       // PapaParse
       answerData = Papa.parse(data, parseConfig)
       console.log("answer data:", answerData)
 
-      $.get('project3_data/validation/Questions.csv').done(data => {
+      $.get('project3_data/test/Questions.csv').done(data => {
         questionData = Papa.parse(data, parseConfig)
         console.log("question data", questionData)
 
