@@ -3,7 +3,6 @@
  * Modified by: Hao Li
  */
 
-// const csv = require('csvtojson')
 const parseConfig = {
   header: true
 }
@@ -170,8 +169,12 @@ function makeQuestion(questions) {
     $("#q-num").empty().html("<h2>Quiz: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
   }
 
+  $("#currQuestion").empty()
 
-  $("#currQuestion").text(questions[qIndex].text)
+  $("<h3/>", {
+    id:"question-statement",
+    text: questions[qIndex].text
+  }).appendTo("#currQuestion")
 
   let buttons = questions[qIndex].buttons
   $("#buttonContainer").empty()
@@ -365,15 +368,29 @@ function clearFeedback() {
 function quizFeedback() {
 
   $("#feedbackContainer").show();
-  $("<button/>", { text: "I'm ready for the challenge!" })
+  if(quizRound === 1 || quizRound === 2){
+    $("<button/>", { text: "I'm ready for the challenge!" })
     .addClass("btn btn-outline-secondary quiz-again")
     .appendTo("#feedbackContainer")
 
-  $(".quiz-again").click(function () {
-    quizRound = 2
-    readFiles()
-    generateQuestions(quizRound)
-  })
+    $(".quiz-again").click(function () {
+      quizRound = 2
+      readFiles()
+      generateQuestions(quizRound)
+    })
+  } else {
+    // $("<button/>", { 
+    //   text: "See summary!",
+    //   id: "summary"
+    // })
+    // .addClass("btn btn-outline-secondary")
+    // .appendTo("#feedbackContainer")
+
+    // $("#summary").click(function (){
+    //   console.log("summary")
+    // })
+  }
+  
 
 }
 
