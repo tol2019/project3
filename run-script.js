@@ -108,8 +108,7 @@ function generateQuestions(quizRound) {
       correctNum = Math.floor(correctNum) + 1
       console.log(correctNum)
     }
-
-
+    
     // push the first [correctNum] correct answers into answers
     let options = []
     options.push(...correctAnswers.slice(0, correctNum))
@@ -153,8 +152,6 @@ function generateQuestions(quizRound) {
     console.log("quizQuestions", quizQuestions)
   })
 
-
-
   console.log("questions generated")
   checkUnderstanding()
 }
@@ -164,9 +161,6 @@ function makeQuestion(questions) {
   // $("#questionContainer").empty()
   $("#feedbackContainer").empty().hide()
 
-  
-
-  
   if (quizRound === 1) {
     $("#q-num").empty().html("<h2>Warm Up: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
   } else {
@@ -196,8 +190,6 @@ function makeQuestion(questions) {
   }).addClass("answers-form")
     .appendTo("#buttonContainer")
 
-  
-
   buttons.forEach(b => {
     $("<p/>", {
       id: "form-check-" + b.id
@@ -223,7 +215,6 @@ function makeQuestion(questions) {
         .addClass("form-check-input")
         .appendTo("#form-check-label-" + b.id)
     }
-
 
     $("<span/>", {
       text: b.description
@@ -270,7 +261,6 @@ function makeQuestion(questions) {
   });
 
   $("#questionContainer").show()
-
 }
 
 
@@ -301,8 +291,6 @@ function giveFeedback(questions, cor, words, whereTo) {
       if (option.selected !== option.key) {
         correct = false
       }
-
-      
       if (!correct && option.selected) {
         $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
       }
@@ -323,8 +311,6 @@ function giveFeedback(questions, cor, words, whereTo) {
       $("<h3/>", { text: "That's not correct..." })
         .css({ "background-color": "rgba(255, 36, 36, 0.1)" })
         .appendTo("#feedbackContainer")
-
-
       if (quizRound === 2) {
         qIndex += 1
       } else {
@@ -335,7 +321,6 @@ function giveFeedback(questions, cor, words, whereTo) {
     }
 
     // $("<p/>", { text: words }).appendTo("#feedbackContainer")
-
     $("<button/>", { text: "Continue" })
       .attr("onClick", "clearFeedback()")
       .addClass("btn btn-outline-secondary")
@@ -345,7 +330,6 @@ function giveFeedback(questions, cor, words, whereTo) {
   } else if (inIntro) {
     clearFeedback()
   } else {
-
     clearFeedback()
   }
 }
@@ -426,12 +410,8 @@ function quizFeedback() {
         readFiles()
         generateQuestions(quizRound)
       })
-
-
     })
   }
-
-
 }
 
 
