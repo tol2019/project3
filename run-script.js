@@ -52,13 +52,13 @@ function checkUnderstanding() {
 }
 
 function readFiles() {
-  $.get('project3_data/Answers.csv')
+  $.get('project3_data/validation/Answers.csv')
     .done(data => {
       // PapaParse
       answerData = Papa.parse(data, parseConfig)
       console.log("answer data:", answerData)
 
-      $.get('project3_data/Questions.csv').done(data => {
+      $.get('project3_data/validation/Questions.csv').done(data => {
         questionData = Papa.parse(data, parseConfig)
         console.log("question data", questionData)
 
@@ -108,7 +108,7 @@ function generateQuestions(quizRound) {
       correctNum = Math.floor(correctNum) + 1
       console.log(correctNum)
     }
-    
+
     // push the first [correctNum] correct answers into answers
     let options = []
     options.push(...correctAnswers.slice(0, correctNum))
@@ -321,7 +321,9 @@ function giveFeedback(questions, cor, words, whereTo) {
     }
 
     // $("<p/>", { text: words }).appendTo("#feedbackContainer")
-    $("<button/>", { text: "Continue" })
+    $("<button/>", { 
+      text: quizRound === 1 ? (correct ? "Continue" : "Retry"): "Continue"
+    })
       .attr("onClick", "clearFeedback()")
       .addClass("btn btn-outline-secondary")
       .appendTo("#feedbackContainer")
@@ -358,9 +360,11 @@ function clearFeedback() {
 // matched label green
 // not matched label red
 function quizFeedback() {
-
+  
   $("#feedbackContainer").show();
   if (quizRound === 1) {
+    $("#q-num").empty().html("<h2>Ready?</h2>")
+    $("#questionContainer").empty()
     $("<button/>", { text: "I'm ready for the challenge!" })
       .addClass("btn btn-outline-secondary quiz-again")
       .appendTo("#feedbackContainer")
@@ -401,7 +405,7 @@ function quizFeedback() {
         text: "Incorrect: " + incorrectNum
       }).appendTo("#feedbackContainer")
 
-      $("<button/>", { text: "I'm ready for the challenge!" })
+      $("<button/>", { text: "I'm ready for another challenge!" })
         .addClass("btn btn-outline-secondary quiz-again")
         .appendTo("#feedbackContainer")
 
