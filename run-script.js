@@ -175,38 +175,47 @@ function makeQuestion(questions) {
 
   let buttons = questions[qIndex].buttons
   $("#buttonContainer").empty()
-  $("<div/>", {
+  $("<form/>", {
     id: "answers-form"
   }).addClass("answers-form")
     .appendTo("#buttonContainer")
 
+  $("<p/>", {
+    id: "instruction", 
+    text: quizRound === 1 ? "Choose the correct one." : "Select all that apply."
+  }).appendTo("#currQuestion")
+
   buttons.forEach(b => {
-    $("<div/>", {
+    $("<p/>", {
       id: "form-check-" + b.id
     }).addClass("form-check").appendTo("#answers-form")
 
+    $("<label/>", {
+      id: "form-check-label-" + b.id
+    }).appendTo("#form-check-" + b.id)
+
     if (quizRound === 1) {
-      $("<input>", {
+      $("<input/>", {
         id: "input-" + b.id,
         type: "radio",
         name: "options"
       }).addClass("options")
         .addClass("form-check-input")
-        .appendTo("#form-check-" + b.id)
+        .appendTo("#form-check-label-" + b.id)
     } else {
-      $("<input>", {
+      $("<input/>", {
         id: "input-" + b.id,
         type: "checkbox"
       }).addClass("options")
         .addClass("form-check-input")
-        .appendTo("#form-check-" + b.id)
+        .appendTo("#form-check-label-" + b.id)
     }
 
 
-    $("<label/>", {
+    $("<span/>", {
       text: b.description
     }).addClass("form-check-label")
-      .appendTo("#form-check-" + b.id)
+      .appendTo("#form-check-label-" + b.id)
 
     if (b.image != "") {
       $("<img>", { src: b.image }).appendTo("#form-check-" + b.id)

@@ -4,6 +4,12 @@ body {
   margin: 0px;
   padding: 0px;
 }
+h2{
+  font-size: 1.8em; 
+}
+h3 {
+  font-size: 1.5em;
+}
 #title {
   margin-top: 0;
   background-color: #ddd;
@@ -30,11 +36,10 @@ body {
   /* justify-content: space-between; */
   margin: auto;
   width: 800px;
-  padding-top: 25px;
 }
 
 #questionContainer, #buttonContainer, #feedbackContainer {
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
