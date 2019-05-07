@@ -3,8 +3,8 @@
 Hao Li, Wei Gong
 
 ## Libraries used:
-- Papa Parse
-- Bootstrap
+- Papa Parser
+- Materialize
 - JQuery
 
 ## How to run:
