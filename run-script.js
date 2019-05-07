@@ -163,18 +163,31 @@ function generateQuestions(quizRound) {
 function makeQuestion(questions) {
   // $("#questionContainer").empty()
   $("#feedbackContainer").empty().hide()
+
+  
+
+  
   if (quizRound === 1) {
     $("#q-num").empty().html("<h2>Warm Up: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
   } else {
     $("#q-num").empty().html("<h2>Quiz: question " + (qIndex + 1) + " of " + quizQuestions.length + "</h2>")
   }
 
-  $("#currQuestion").empty()
+  // $("#currQuestion").empty()
+  $("#questionContainer").empty()
 
   $("<h3/>", {
-    id:"question-statement",
+    id: "question-statement",
     text: questions[qIndex].text
-  }).appendTo("#currQuestion")
+  }).appendTo("#questionContainer")
+  $("<p/>", {
+    id: "instruction",
+    text: quizRound === 1 ? "Choose the correct one." : "Select all that apply."
+  }).appendTo("#questionContainer")
+
+  $("<div/>", {
+    id: "buttonContainer"
+  }).appendTo("#questionContainer")
 
   let buttons = questions[qIndex].buttons
   $("#buttonContainer").empty()
@@ -183,10 +196,7 @@ function makeQuestion(questions) {
   }).addClass("answers-form")
     .appendTo("#buttonContainer")
 
-  $("<p/>", {
-    id: "instruction", 
-    text: quizRound === 1 ? "Choose the correct one." : "Select all that apply."
-  }).appendTo("#currQuestion")
+  
 
   buttons.forEach(b => {
     $("<p/>", {
@@ -288,32 +298,30 @@ function giveFeedback(questions, cor, words, whereTo) {
       if (option.selected) {
         $("#form-check-b" + (index + 1) + " .form-check-label").css({ "font-weight": "bold" })
       }
-      // if (option.selected === option.key) {
-      //   $("#form-check-b"+(index+1)).css({"border": "2px solid green", "background-color":"rgba(36, 255, 36, 0.25)"})
-      // } else {
-      //   $("#form-check-b"+(index+1)).css({"border": "2px solid red", "background-color":"rgba(255, 36, 36, 0.25)"})
-      // }
       if (option.selected !== option.key) {
         correct = false
       }
+
       
-        if (option.key) {
-          $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
-        }
-        if (!correct && option.selected) {
-          $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
-        }
+      if (!correct && option.selected) {
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(255, 36, 36, 0.1)", "background-color": "rgba(255, 36, 36, 0.1)" })
+      }
+      if (option.key) {
+        $("#form-check-b" + (index + 1)).css({ "border": "2px solid rgba(36, 255, 36, 0.25)", "background-color": "rgba(36, 255, 36, 0.25)" })
+      }
 
     })
 
+    quizQuestions[qIndex].result.result = correct
+
     if (correct) {
       $("<h3/>", { text: "Correct!" })
-        .css({"background-color": "rgba(36, 255, 36, 0.25)"})
+        .css({ "background-color": "rgba(36, 255, 36, 0.25)" })
         .appendTo("#feedbackContainer")
       qIndex += 1
     } else {
       $("<h3/>", { text: "That's not correct..." })
-        .css({"background-color": "rgba(255, 36, 36, 0.1)"})
+        .css({ "background-color": "rgba(255, 36, 36, 0.1)" })
         .appendTo("#feedbackContainer")
 
 
@@ -368,10 +376,10 @@ function clearFeedback() {
 function quizFeedback() {
 
   $("#feedbackContainer").show();
-  if(quizRound === 1 || quizRound === 2){
+  if (quizRound === 1) {
     $("<button/>", { text: "I'm ready for the challenge!" })
-    .addClass("btn btn-outline-secondary quiz-again")
-    .appendTo("#feedbackContainer")
+      .addClass("btn btn-outline-secondary quiz-again")
+      .appendTo("#feedbackContainer")
 
     $(".quiz-again").click(function () {
       quizRound = 2
@@ -379,18 +387,50 @@ function quizFeedback() {
       generateQuestions(quizRound)
     })
   } else {
-    // $("<button/>", { 
-    //   text: "See summary!",
-    //   id: "summary"
-    // })
-    // .addClass("btn btn-outline-secondary")
-    // .appendTo("#feedbackContainer")
+    $("<button/>", {
+      text: "See summary!",
+      id: "summary"
+    })
+      .addClass("btn btn-outline-secondary")
+      .appendTo("#feedbackContainer")
 
-    // $("#summary").click(function (){
-    //   console.log("summary")
-    // })
+    $("#summary").click(function () {
+      console.log("summary")
+      let correctNum = 0
+      let incorrectNum = 0
+      quizQuestions.forEach(question => {
+        if (question.result.result) correctNum += 1
+        else incorrectNum += 1
+      })
+
+      // $("#currQuestion").empty()
+      $("#questionContainer").empty()
+      $("#feedbackContainer").empty().show()
+
+      $("#q-num").empty().html("<h2>Summary</h2>")
+
+      $("<p/>", {
+        text: "Correct: " + correctNum,
+      }).appendTo("#feedbackContainer")
+
+      $("<p/>", {
+        text: "Incorrect: " + incorrectNum
+      }).appendTo("#feedbackContainer")
+
+      $("<button/>", { text: "I'm ready for the challenge!" })
+        .addClass("btn btn-outline-secondary quiz-again")
+        .appendTo("#feedbackContainer")
+
+      $(".quiz-again").click(function () {
+        quizRound = 2
+        readFiles()
+        generateQuestions(quizRound)
+      })
+
+
+    })
   }
-  
+
 
 }
 
